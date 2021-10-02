@@ -1,0 +1,127 @@
+SQL> create table Employee(name varchar2(10),da number(10),hra number(10),ta number(10),salary number(10));
+
+Table created.
+
+
+SQL> insert into Empolyee values('&name','&da','&hra','&ta','&salary');
+Enter value for name: Anil
+Enter value for da: 1000
+Enter value for hra: 2000
+Enter value for ta: 1000
+Enter value for salary: 15000
+old   1: insert into Employee values('&name','&da','&hra','&ta','&salary')
+new   1: insert into Employee values('Anil','1000','2000','1000','15000')
+
+1 row created.
+
+SQL> insert into Employee values('&name','&da','&hra','&ta','&salary');
+Enter value for name: Arun
+Enter value for da: 1000
+Enter value for hra: 3000
+Enter value for ta: 15000
+Enter value for salary: 20000
+old   1: insert into Employee values('&name','&da','&hra','&ta','&salary')
+new   1: insert into Employee values('Arun','1000','3000','15000','20000')
+
+1 row created.
+
+SQL> insert into Employee values('&name','&da','&hra','&ta','&salary');
+Enter value for name: Anu
+Enter value for da: 500
+Enter value for hra: 2000
+Enter value for ta: 500
+Enter value for salary: 90000
+old   1: insert into Employee values('&name','&da','&hra','&ta','&salary')
+new   1: insert into Employee values('Anu','500','2000','500','90000')
+
+1 row created.
+
+SQL> insert into Employee values('&name','&da','&hra','&ta','&salary');
+Enter value for name: Beena
+Enter value for da: 900
+Enter value for hra: 2500
+Enter value for ta: 1000
+Enter value for salary: 11000
+old   1: insert into Employee values('&name','&da','&hra','&ta','&salary')
+new   1: insert into Employee values('Beena','900','2500','1000','11000')
+
+1 row created.
+
+SQL> insert into Empolyee values('&name','&da','&hra','&ta','&salary');
+Enter value for name: Remya
+Enter value for da: 1500
+Enter value for hra: 1000
+Enter value for ta: 2000
+Enter value for salary: 100000
+old   1: insert into Employee values('&name','&da','&hra','&ta','&salary')
+new   1: insert into Employee values('Remya','1500','1000','2000','100000')
+
+1 row created.
+
+SQL> select * from Employee;
+
+NAME               DA        HRA         TA     SALARY
+---------- ---------- ---------- ---------- ----------
+Anil             1000       2000       1000      15000
+Arun             1000       3000      15000      20000
+Anu              500        2000        500      90000
+Beena            900        2500       1000      11000
+Remya            1500       1000       2000     100000
+
+
+A)   SQL> create view Employeeview as select name,salary from Employee where salary >10000;
+
+      View created.
+
+     SQL> select * from Employeeview;
+
+       NAME           SALARY
+      ---------- ----------
+       Anil            15000
+       Arun            20000
+       Anu             90000
+       Beena           11000
+       Remya          100000
+	   
+	   
+B)	 SQL> update Empolyee set salary = 25000;
+
+     5 rows updated.
+
+     SQL> select * from Empolyee;
+
+       NAME               DA        HRA         TA     SALARY
+     ---------- ---------- ---------- ---------- ----------
+       Anil             1000       2000       1000      25000
+       Arun             1000       3000      15000      25000
+       Anu              500        2000        500      25000
+       Beena            900        2500       1000      25000
+       Remya            1500       1000       2000      25000
+
+     SQL> select * from Empolyeeview;
+
+        NAME           SALARY
+      ---------- ----------
+        Anil            25000
+        Arun            25000
+        Anu             25000
+        Beena           25000
+        Remya           25000
+
+C)   SQL> update Employeeview set salary = 1000;
+
+     5 rows updated.
+
+     SQL> select * from Employeeview;
+
+     no rows selected
+
+     SQL> select * from Employee;
+
+       NAME               DA        HRA         TA     SALARY
+    ---------- ---------- ---------- ---------- ----------
+       Anil            1000       2000       1000       1000
+       Arun            1000       3000      15000       1000
+       Anu             500        2000        500       1000
+       Beena           900        2500       1000       1000
+       Remya           1500       1000       2000       1000
