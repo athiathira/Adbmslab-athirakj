@@ -1,0 +1,18 @@
+from pprint import pprint
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017/")
+
+db = client["med_data"]
+my_collection = db["patient_data"]
+patient_record = {
+    "Name": "Aleena",
+    "Age": 29,
+    "Sex": "F",
+    "Blood pressure": [{"sys": 172}, {"dia": 78}],
+    "Heart rate":70
+    }
+my_collection.insert_one(patient_record)
+print("DATA")
+for item in my_collection.find() :
+    pprint(item)
