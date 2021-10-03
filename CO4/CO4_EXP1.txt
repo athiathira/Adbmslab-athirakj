@@ -1,0 +1,147 @@
+1.Create a database named Employee. Create a collection named empDetails
+You can use any of the fields Name, Age ,e_mail, phone,salary
+
+i) Insert 5 documents in it using the different insert() methods and
+use EMP
+switched to db EMP
+> db
+EMP
+> db.createCollection("empDetails")
+{
+        "ok" : 0,
+        "errmsg" : "Collection already exists. NS: EMP.empDetails",
+        "code" : 48,
+        "codeName" : "NamespaceExists"
+}
+> db.empDetails.drop()
+true
+> db.createCollection("empDetails")
+{ "ok" : 1 }
+> show collections
+empDetails
+empdetails
+> db.empDetails.insert({Name:"Mohan",Age:57,e_mail:"mohan12@gmail.com",Salary:5000})
+WriteResult({ "nInserted" : 1 })
+> db.empDetails.insert({Name:"Raju",Age:30,e_mail:"raju@gmail.com",Salary:6000})
+WriteResult({ "nInserted" : 1 })
+> db.empDetails.insert({Name:"Bhuvan",Age:38,e_mail:"bhuvan@gmail.com",Salary:8000})
+WriteResult({ "nInserted" : 1 })
+> db.empDetails.insert({Name:"Bablu",Age:26,e_mail:"bablu@gmail.com",Salary:12000})
+WriteResult({ "nInserted" : 1 })
+> db.empDetails.insert({Name:"Ameer",Age:27,e_mail:"ameer@gmail.com",Salary:10000})
+WriteResult({ "nInserted" : 1 })
+> db.empDetails.count()
+5
+
+
+a) Find the details of employee whose name is mohan
+> db.empDetails.findOne({Name:"Mohan"})
+{
+        "_id" : ObjectId("613766054a25ecc9a8ff17f9"),
+        "Name" : "Mohan",
+        "Age" : 57,
+        "e_mail" : "mohan12@gmail.com",
+        "Salary" : 5000
+}
+
+
+b) Fetch the documents of employees whose salary &gt;=5000
+> db.empDetails.find({$and:[{salary:{$gte:5000}}]})
+> db.empDetails.find({$and:[{Salary:{$gte:5000}}]})
+{ "_id" : ObjectId("613766054a25ecc9a8ff17f9"), "Name" : "Mohan", "Age" : 57, "e_mail" : "mohan12@gmail.com", "Salary" : 5000 }
+{ "_id" : ObjectId("6137660d4a25ecc9a8ff17fa"), "Name" : "Raju", "Age" : 30, "e_mail" : "raju@gmail.com", "Salary" : 6000 }
+{ "_id" : ObjectId("613766164a25ecc9a8ff17fb"), "Name" : "Bhuvan", "Age" : 38, "e_mail" : "bhuvan@gmail.com", "Salary" : 8000 }
+{ "_id" : ObjectId("613766534a25ecc9a8ff17fc"), "Name" : "Bablu", "Age" : 26, "e_mail" : "bablu@gmail.com", "Salary" : 12000 }
+{ "_id" : ObjectId("6137666a4a25ecc9a8ff17fd"), "Name" : "Ameer", "Age" : 27, "e_mail" : "ameer@gmail.com", "Salary" : 10000 }
+
+
+c) Find the documents of employees whose name starts with letter r
+> db.empDetails.find({$or:[{"Name":/^R/}]});
+{ "_id" : ObjectId("6137660d4a25ecc9a8ff17fa"), "Name" : "Raju", "Age" : 30, "e_mail" : "raju@gmail.com", "Salary" : 6000 }
+
+
+d) Find the documents of employees whose name is not in mohan , raju, bhuvan
+
+	> db.empDetails.find{"Name":{$not:{$in["Mohan","Raju","Bhuvan"]}}}).pretty()
+uncaught exception: SyntaxError: unexpected token: '{' :
+@(shell):1:18
+> db.empDetails.find({"Name":{$not:{$in["Mohan","Raju","Bhuvan"]}}}).pretty()
+uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:37
+> db.empDetails.find({"Name":{$not:{$in:["Mohan","Raju","Bhuvan"]}}}).pretty()
+{
+        "_id" : ObjectId("613766534a25ecc9a8ff17fc"),
+        "Name" : "Bablu",
+        "Age" : 26,
+        "e_mail" : "bablu@gmail.com",
+        "Salary" : 12000
+}
+{
+        "_id" : ObjectId("6137666a4a25ecc9a8ff17fd"),
+        "Name" : "Ameer",
+        "Age" : 27,
+        "e_mail" : "ameer@gmail.com",
+        "Salary" : 10000
+}
+
+
+e) Find the documents of employees whose names are mohan , raju, bhuvan
+> db.empDetails.find({"Name":{$in:["Mohan","Raju","Bhuvan"]}}}).pretty()
+uncaught exception: SyntaxError: missing ) after argument list :
+@(shell):1:59
+> db.empDetails.find({"Name":{$in:["Mohan","Raju","Bhuvan"]}}).pretty()
+{
+        "_id" : ObjectId("613766054a25ecc9a8ff17f9"),
+        "Name" : "Mohan",
+        "Age" : 57,
+        "e_mail" : "mohan12@gmail.com",
+        "Salary" : 5000
+}
+{
+        "_id" : ObjectId("6137660d4a25ecc9a8ff17fa"),
+        "Name" : "Raju",
+        "Age" : 30,
+        "e_mail" : "raju@gmail.com",
+        "Salary" : 6000
+}
+{
+        "_id" : ObjectId("613766164a25ecc9a8ff17fb"),
+        "Name" : "Bhuvan",
+        "Age" : 38,
+        "e_mail" : "bhuvan@gmail.com",
+        "Salary" : 8000
+}
+
+
+f) Retrieve the details of employees whose age is less than 30. Display only the fields
+name, salary
+> db.empDetails.find({Age:{$lt:30}},{Name:1,Salary:1})
+{ "_id" : ObjectId("613766534a25ecc9a8ff17fc"), "Name" : "Bablu", "Salary" : 12000 }
+{ "_id" : ObjectId("6137666a4a25ecc9a8ff17fd"), "Name" : "Ameer", "Salary" : 10000 }
+
+
+g) Find the details of employees whose salary is &gt;5000 and age is &lt; 30
+> db.empDetails.find({$and:[{Salary:{$gt:5000}},{Age:{$lt:30}}]})
+{ "_id" : ObjectId("613766534a25ecc9a8ff17fc"), "Name" : "Bablu", "Age" : 26, "e_mail" : "bablu@gmail.com", "Salary" : 12000 }
+{ "_id" : ObjectId("6137666a4a25ecc9a8ff17fd"), "Name" : "Ameer", "Age" : 27, "e_mail" : "ameer@gmail.com", "Salary" : 10000 }
+
+
+h) Update the e-mail of employee whose name is mohan // findOneAndUpdate()
+> db.empDetails.updateOne({Name:'Mohan'},{$set:{e_mail:'mohan345@gmail.com'}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.empDetails.findOneAndUpdate({Name:'Mohan'},{$set:{e_mail:'mohan345@gmail.com'}})
+{
+        "_id" : ObjectId("613766054a25ecc9a8ff17f9"),
+        "Name" : "Mohan",
+        "Age" : 57,
+        "e_mail" : "mohan345@gmail.com",
+        "Salary" : 5000
+} 
+
+
+i) Delete all the documents of employees whose age&gt;56
+
+> db.empDetails.deleteMany({Age:{$gt:56}})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.empDetails.find({Age:{$gt:56}})
+
