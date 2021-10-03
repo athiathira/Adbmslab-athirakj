@@ -1,0 +1,42 @@
+
+ use Inventory
+switched to db Inventory
+> db.createCollection("Orders")
+{ "ok" : 1 }
+> db.orders.insert({Custid:101,Name:"Anju",Item:"chocalate",Price:250})
+WriteResult({ "nInserted" : 1 })
+> db.orders.insert({Custid:102,Name:"Chinju",Item:"noodles",Price:200})
+WriteResult({ "nInserted" : 1 })
+> db.orders.insert({Custid:101,Name:"Anju",Item:"apple",Price:100})
+WriteResult({ "nInserted" : 1 })
+> db.orders.insert({Custid:103,Name:"kunju",Item:"biscuit",Price:150})
+WriteResult({ "nInserted" : 1 })
+> db.orders.insert({Custid:102,Name:"Chinju",Item:"cake",Price:400})
+WriteResult({ "nInserted" : 1 })
+> db.orders.insert({Custid:101,Name:"Anju",Item:"orange",Price:100})
+WriteResult({ "nInserted" : 1 })
+> db.orders.insert({Custid:104,Name:"Ammu",Item:"milk",Price:57})
+WriteResult({ "nInserted" : 1 })
+> db.Orders.find()
+> db.orders.find()
+{ "_id" : ObjectId("61419de38f3cb8cded8e6ae8"), "Custid" : 101, "Name" : "Anju", "Item" : "chocalate", "Price" : 250 }
+{ "_id" : ObjectId("61419e498f3cb8cded8e6ae9"), "Custid" : 102, "Name" : "Chinju", "Item" : "noodles", "Price" : 200 }
+{ "_id" : ObjectId("61419ea08f3cb8cded8e6aea"), "Custid" : 101, "Name" : "Anju", "Item" : "apple", "Price" : 100 }
+{ "_id" : ObjectId("61419ee48f3cb8cded8e6aeb"), "Custid" : 103, "Name" : "kunju", "Item" : "biscuit", "Price" : 150 }
+{ "_id" : ObjectId("61419f378f3cb8cded8e6aec"), "Custid" : 102, "Name" : "Chinju", "Item" : "cake", "Price" : 400 }
+{ "_id" : ObjectId("61419f8e8f3cb8cded8e6aed"), "Custid" : 101, "Name" : "Anju", "Item" : "orange", "Price" : 100 }
+{ "_id" : ObjectId("61419fc28f3cb8cded8e6aee"), "Custid" : 104, "Name" : "Ammu", "Item" : "milk", "Price" : 57 }
+
+
+
+ var mapFunction = function() { emit(this.Custid,this.Price);};
+> var reduceFunction = function(keyCustid,valuesPrices){return Array.sum(valuesPrices);};
+> db.orders.mapReduce(mapFunction,reduceFunction,{ out:"map_example"})
+{ "result" : "map_example", "ok" : 1 }
+> db.map_example.find()
+{ "_id" : 103, "value" : 150 }
+{ "_id" : 102, "value" : 600 }
+{ "_id" : 104, "value" : 57 }
+{ "_id" : 101, "value" : 450 }
+>
+

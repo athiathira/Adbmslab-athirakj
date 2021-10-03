@@ -1,0 +1,94 @@
+
+
+> use Employee
+switched to db Employee
+> db.empDetails.insert({Name:"Mohan",Age:57,e_mail:"mohan@gmail.com",dept:"MCA",Salary:60000})
+WriteResult({ "nInserted" : 1 })
+> db.empDetails.insert({Name:"Raju",Age:40,e_mail:"raju@gmail.com",dept:"BCA",Salary:40000})
+WriteResult({ "nInserted" : 1 })
+> db.empDetails.insert({Name:"Bhuvan",Age:37,e_mail:"bhuvan@gmail.com",dept:"MTech",Salary:50000})
+WriteResult({ "nInserted" : 1 })
+> db.empDetails.insert({Name:"Babli",Age:35,e_mail:"bablu@gmail.com",dept:"BTech",Salary:35000})
+WriteResult({ "nInserted" : 1 })
+> db.empDetails.insert({Name:"Ameer",Age:45,e_mail:"ameer@gmail.com",dept:"MBA",Salary:45000})
+WriteResult({ "nInserted" : 1 })
+
+> db.empDetails.find()
+
+{ "_id" : ObjectId("61417af18f3cb8cded8e6ae0"), "Name" : "Mohan", "Age" : 57, "e_mail" : "mohan@gmail.com", "dept" : "MCA", "Salary" : 60000 }
+{ "_id" : ObjectId("61417dba8f3cb8cded8e6ae1"), "Name" : "Raju", "Age" : 40, "e_mail" : "raju@gmail.com", "dept" : "BCA", "Salary" : 40000 }
+{ "_id" : ObjectId("61417e228f3cb8cded8e6ae2"), "Name" : "Bhuvan", "Age" : 37, "e_mail" : "bhuvan@gmail.com", "dept" : "MTech", "Salary" : 50000 }
+{ "_id" : ObjectId("61417e8a8f3cb8cded8e6ae3"), "Name" : "Babli", "Age" : 35, "e_mail" : "bablu@gmail.com", "dept" : "BTech", "Salary" : 35000 }
+{ "_id" : ObjectId("61417ec58f3cb8cded8e6ae4"), "Name" : "Ameer", "Age" : 45, "e_mail" : "ameer@gmail.com", "dept" : "MBA", "Salary" : 45000 }
+
+> db.empDetails.aggregate([{$group:{_id:"$dept","avg Salary":{$avg:"$Salary"}}}])
+
+{ "_id" : "MTech", "avg Salary" : 50000 }
+{ "_id" : "MCA", "avg Salary" : 33000 }
+{ "_id" : "MBA", "avg Salary" : 45000 }
+{ "_id" : "BTech", "avg Salary" : 35000 }
+{ "_id" : "BCA", "avg Salary" : 40000 }
+
+> db.empDetails.aggregate([{$group:{_id:"$dept","minimum Salary":{$min:"$Salary"}}}])
+
+{ "_id" : "MTech", "minimum Salary" : 50000 }
+{ "_id" : "MCA", "minimum Salary" : 6000 }
+{ "_id" : "MBA", "minimum Salary" : 45000 }
+{ "_id" : "BTech", "minimum Salary" : 35000 }
+{ "_id" : "BCA", "minimum Salary" : 40000 }
+> db.empDetails.aggregate([{$group:{_id:"$dept","maximum Salary":{$max:"$Salary"}}}])
+{ "_id" : "MTech", "maximum Salary" : 50000 }
+{ "_id" : "MCA", "maximum Salary" : 60000 }
+{ "_id" : "MBA", "maximum Salary" : 45000 }
+{ "_id" : "BTech", "maximum Salary" : 35000 }
+{ "_id" : "BCA", "maximum Salary" : 40000 }
+> db.empDetails.aggregate([{$group:{_id:"$dept","No of emp":{$sum:1}}}])
+{ "_id" : "MTech", "No of emp" : 1 }
+{ "_id" : "MCA", "No of emp" : 2 }
+{ "_id" : "MBA", "No of emp" : 1 }
+{ "_id" : "BTech", "No of emp" : 1 }
+{ "_id" : "BCA", "No of emp" : 1 }
+
+
+> db.empDetails.find().sort({"Name":1})
+{ "_id" : ObjectId("61417ec58f3cb8cded8e6ae4"), "Name" : "Ameer", "Age" : 45, "e_mail" : "ameer@gmail.com", "dept" : "MBA", "Salary" : 45000 }
+{ "_id" : ObjectId("61417e8a8f3cb8cded8e6ae3"), "Name" : "Babli", "Age" : 35, "e_mail" : "bablu@gmail.com", "dept" : "BTech", "Salary" : 35000 }
+{ "_id" : ObjectId("61417e228f3cb8cded8e6ae2"), "Name" : "Bhuvan", "Age" : 37, "e_mail" : "bhuvan@gmail.com", "dept" : "MTech", "Salary" : 50000 }
+{ "_id" : ObjectId("61417948701efccd47aa6aa6"), "Name" : "Mohan", "Age" : 57, "e_mail" : "mohan@12gmail.com", "dept" : "MCA", "Salary" : 6000 }
+{ "_id" : ObjectId("61417af18f3cb8cded8e6ae0"), "Name" : "Mohan", "Age" : 57, "e_mail" : "mohan@gmail.com", "dept" : "MCA", "Salary" : 60000 }
+{ "_id" : ObjectId("61417dba8f3cb8cded8e6ae1"), "Name" : "Raju", "Age" : 40, "e_mail" : "raju@gmail.com", "dept" : "BCA", "Salary" : 40000 }
+> db.empDetails.find().sort({"Name":-1})
+{ "_id" : ObjectId("61417dba8f3cb8cded8e6ae1"), "Name" : "Raju", "Age" : 40, "e_mail" : "raju@gmail.com", "dept" : "BCA", "Salary" : 40000 }
+{ "_id" : ObjectId("61417948701efccd47aa6aa6"), "Name" : "Mohan", "Age" : 57, "e_mail" : "mohan@12gmail.com", "dept" : "MCA", "Salary" : 6000 }
+{ "_id" : ObjectId("61417af18f3cb8cded8e6ae0"), "Name" : "Mohan", "Age" : 57, "e_mail" : "mohan@gmail.com", "dept" : "MCA", "Salary" : 60000 }
+{ "_id" : ObjectId("61417e228f3cb8cded8e6ae2"), "Name" : "Bhuvan", "Age" : 37, "e_mail" : "bhuvan@gmail.com", "dept" : "MTech", "Salary" : 50000 }
+{ "_id" : ObjectId("61417e8a8f3cb8cded8e6ae3"), "Name" : "Babli", "Age" : 35, "e_mail" : "bablu@gmail.com", "dept" : "BTech", "Salary" : 35000 }
+{ "_id" : ObjectId("61417ec58f3cb8cded8e6ae4"), "Name" : "Ameer", "Age" : 45, "e_mail" : "ameer@gmail.com", "dept" : "MBA", "Salary" : 45000 }
+
+
+> db.empDetails.aggregate([{$group:{_id:"$dept","No of employees":{$sum:1}}}])
+{ "_id" : "MTech", "No of employees" : 1 }
+{ "_id" : "MCA", "No of employees" : 2 }
+{ "_id" : "MBA", "No of employees" : 1 }
+{ "_id" : "BTech", "No of employees" : 1 }
+{ "_id" : "BCA", "No of employees" : 1 }
+
+
+
+
+
+> db.empDetails.createIndex({Title:"text"})
+{
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "createdCollectionAutomatically" : false,
+        "ok" : 1
+}
+
+
+> db.empDetails.find({$text:{$search:"Mohan Bhuvan"}})
+
+
+
+
+
